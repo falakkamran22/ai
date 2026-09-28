@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LumiLearn — Study smarter with AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --navy-950:#070a14;
+  --navy-900:#0c1024;
+  --navy-800:#131a34;
+  --navy-700:#1b2447;
+  --navy-600:#28315c;
+  --violet:#8b7cf6;
+  --violet-deep:#6c5ce0;
+  --lavender:#c3b6ff;
+  --blue-soft:#6fc7ee;
+  --paper:#f5f4fb;
+  --paper-dim:#eceafb;
+  --card:#ffffff;
+  --ink-900:#12142b;
+  --ink-700:#2b2d47;
+  --ink-500:#5b5e7a;
+  --ink-400:#8688a3;
+  --line:#e6e4f6;
+  --success:#2fbf8f;
+  --success-bg:#e4f8f1;
+  --warning:#f4a83c;
+  --warning-bg:#fdf1de;
+  --danger:#f0685f;
+  --danger-bg:#fdeceb;
+  --radius-sm:10px;
+  --radius-md:16px;
+  --radius-lg:24px;
+  --shadow-soft:0 12px 32px -12px rgba(23,20,60,0.16);
+  --shadow-lift:0 20px 48px -16px rgba(23,20,60,0.28);
+  --font-head:'Space Grotesk', 'Inter', sans-serif;
+  --font-body:'Inter', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--navy-950);
+  color:var(--ink-900);
+  -webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+img,svg{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+ul{list-style:none;padding:0;margin:0;}
+h1,h2,h3,h4{font-family:var(--font-head);margin:0;line-height:1.15;letter-spacing:-0.01em;}
+p{margin:0;}
+.overflow-x{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+
+/* ============ LAYOUT SHELLS ============ */
+#app{min-height:100vh;}
+.hidden{display:none !important;}
+
+/* ============ LANDING PAGE ============ */
+.landing{
+  background:
+    radial-gradient(1100px 600px at 82% -10%, rgba(139,124,246,0.20), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(111,199,238,0.14), transparent 55%),
+    var(--navy-950);
+  color:#eceaf8;
+  overflow-x:clip;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+.l-nav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:rgba(7,10,20,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.l-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:1.15rem;color:#fff;}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--violet),var(--blue-soft));position:relative;flex:none;}
+.brand-mark::after{content:'';position:absolute;inset:8px;border-radius:4px;background:rgba(255,255,255,0.85);}
+.l-links{display:flex;align-items:center;gap:30px;font-size:0.92rem;color:#c9c8e3;}
+.l-links a{transition:color .18s;}
+.l-links a:hover{color:#fff;}
+.l-actions{display:flex;align-items:center;gap:14px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:999px;padding:12px 22px;font-weight:600;font-size:0.92rem;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:linear-gradient(135deg,var(--violet),#7b6ef0);color:#fff;box-shadow:0 10px 24px -8px rgba(139,124,246,0.55);}
+.btn-primary:hover{box-shadow:0 14px 30px -8px rgba(139,124,246,0.7);}
+.btn-ghost{background:rgba(255,255,255,0.06);color:#f1f0fb;border:1px solid rgba(255,255,255,0.14);}
+.btn-ghost:hover{background:rgba(255,255,255,0.12);}
+.btn-outline-dark{background:transparent;border:1.5px solid var(--navy-700);color:var(--ink-700);}
+.btn-outline-dark:hover{border-color:var(--violet);color:var(--violet-deep);}
+.btn-light{background:var(--card);color:var(--ink-900);box-shadow:var(--shadow-soft);}
+.btn-light:hover{box-shadow:var(--shadow-lift);}
+.btn-sm{padding:8px 16px;font-size:0.82rem;}
+.btn-block{width:100%;}
+.nav-toggle{display:none;background:none;border:none;color:#fff;padding:8px;}
+.mobile-menu{display:none;flex-direction:column;gap:2px;padding:10px 24px 18px;background:rgba(7,10,20,0.98);border-bottom:1px solid rgba(255,255,255,0.08);}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:12px 6px;color:#dcdaf0;font-size:0.95rem;border-radius:8px;}
+.mobile-menu a:hover{background:rgba(255,255,255,0.06);}
+
+.hero{padding:76px 0 40px;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+.eyebrow-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  background:rgba(139,124,246,0.14);border:1px solid rgba(139,124,246,0.35);
+  font-size:0.8rem;color:var(--lavender);font-weight:600;margin-bottom:22px;
+}
+.eyebrow-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-soft);}
+.hero h1{font-size:3.1rem;color:#fff;font-weight:700;max-width:560px;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--lavender),var(--blue-soft));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.sub{margin-top:22px;font-size:1.08rem;color:#b9b8d6;max-width:480px;line-height:1.6;}
+.hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+.feature-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px;}
+.chip{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);font-size:0.78rem;color:#cfcee8;display:flex;align-items:center;gap:7px;}
+.chip svg{width:14px;height:14px;flex:none;}
+
+/* hero visual */
+.hero-visual{position:relative;}
+.hero-illustration{position:relative;border-radius:28px;overflow:visible;}
+.floating-card{
+  position:absolute;background:rgba(19,26,52,0.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px;padding:14px 16px;box-shadow:0 20px 40px -16px rgba(0,0,0,0.5);
+  animation:floaty 6s ease-in-out infinite;
+}
+.floating-card.card-a{top:6%;left:-8%;animation-delay:0s;}
+.floating-card.card-b{bottom:8%;right:-6%;animation-delay:1.2s;}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.fc-title{font-size:0.72rem;color:#9d9cc4;margin-bottom:4px;}
+.fc-value{font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;}
+.fc-ring{width:34px;height:34px;}
+
+/* how it works */
+.section{padding:88px 0;}
+.section-head{max-width:560px;margin-bottom:52px;}
+.section-tag{color:var(--blue-soft);font-weight:600;font-size:0.85rem;margin-bottom:12px;display:block;}
+.section-head h2{font-size:2.1rem;color:#fff;}
+.section-head p{margin-top:14px;color:#b6b5d3;font-size:1.02rem;line-height:1.6;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step;}
+.step-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:32px 26px;
+  opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;
+}
+.step-card.in-view{opacity:1;transform:translateY(0);}
+.step-num{font-family:var(--font-head);font-size:2.4rem;font-weight:700;color:transparent;-webkit-text-stroke:1.4px rgba(139,124,246,0.7);margin-bottom:18px;}
+.step-card h3{color:#fff;font-size:1.15rem;margin-bottom:10px;}
+.step-card p{color:#adacca;font-size:0.94rem;line-height:1.55;}
+
+/* features */
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.feat-card{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-md);
+  padding:26px 22px;transition:transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.feat-card:hover{transform:translateY(-5px);border-color:rgba(139,124,246,0.4);background:rgba(255,255,255,0.055);}
+.feat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:linear-gradient(135deg,rgba(139,124,246,0.25),rgba(111,199,238,0.2));}
+.feat-icon svg{width:22px;height:22px;color:var(--lavender);}
+.feat-card h3{color:#fff;font-size:1.02rem;margin-bottom:8px;}
+.feat-card p{color:#a7a6c6;font-size:0.88rem;line-height:1.55;}
+
+/* footer / final CTA */
+.final-cta{
+  border-radius:32px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg, rgba(139,124,246,0.16), rgba(111,199,238,0.1));
+  border:1px solid rgba(255,255,255,0.09);
+}
+.final-cta h2{color:#fff;font-size:2rem;max-width:520px;margin:0 auto 14px;}
+.final-cta p{color:#c3c2e0;margin-bottom:28px;}
+.l-footer{padding:40px 0 60px;color:#7f7ea3;font-size:0.85rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{order:-1;max-width:440px;margin:0 auto;}
+  .hero h1{font-size:2.3rem;}
+  .steps{grid-template-columns:1fr;}
+  .feat-grid{grid-template-columns:repeat(2,1fr);}
+  .l-links{display:none;}
+  .nav-toggle{display:block;}
+}
+@media (max-width:520px){
+  .feat-grid{grid-template-columns:1fr;}
+  .final-cta{padding:44px 22px;}
+  .hero{padding:44px 0 20px;}
+}
+
+/* ============ APP SHELL ============ */
+.appshell{min-height:100vh;background:var(--paper);display:flex;}
+.sidebar{
+  width:250px;flex:none;background:linear-gradient(180deg,var(--navy-950),var(--navy-900));
+  color:#e7e6f6;display:flex;flex-direction:column;padding:22px 16px;
+  position:sticky;top:0;height:100vh;
+}
+.sidebar .brand{padding:6px 10px 26px;}
+.side-nav{flex:1;display:flex;flex-direction:column;gap:3px;}
+.side-link{
+  display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;
+  color:#a9a8c9;font-size:0.9rem;font-weight:500;transition:background .15s,color .15s;
+}
+.side-link svg{width:18px;height:18px;flex:none;}
+.side-link:hover{background:rgba(255,255,255,0.05);color:#fff;}
+.side-link.active{background:rgba(139,124,246,0.16);color:#fff;box-shadow:inset 0 0 0 1px rgba(139,124,246,0.3);}
+.side-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:10px;display:flex;flex-direction:column;gap:3px;}
+.side-profile{display:flex;align-items:center;gap:10px;padding:10px 12px;}
+.avatar{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--violet),var(--blue-soft));flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:0.85rem;}
+.side-profile .who{font-size:0.85rem;}
+.side-profile .who .name{color:#fff;font-weight:600;}
+.side-profile .who .role{color:#8f8eb6;font-size:0.74rem;}
+
+.main-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{
+  display:none;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:var(--navy-950);color:#fff;position:sticky;top:0;z-index:30;
+  padding-top:calc(14px + env(safe-area-inset-top,0px));
+}
+.icon-btn{background:rgba(255,255,255,0.08);border:none;color:#fff;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.content{flex:1;padding:30px 36px 90px;max-width:1180px;width:100%;}
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:40;
+  background:rgba(7,10,20,0.94);backdrop-filter:blur(12px);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));
+  justify-content:space-around;border-top:1px solid rgba(255,255,255,0.08);
+}
+.bn-link{display:flex;flex-direction:column;align-items:center;gap:3px;color:#8f8eb6;font-size:0.62rem;padding:4px 6px;border-radius:10px;}
+.bn-link svg{width:20px;height:20px;}
+.bn-link.active{color:var(--lavender);}
+
+@media (max-width:960px){
+  .sidebar{display:none;}
+  .topbar{display:flex;}
+  .bottom-nav{display:flex;}
+  .content{padding:22px 16px 96px;}
+}
+
+/* page header */
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:26px;}
+.page-head h1{font-size:1.7rem;color:var(--ink-900);}
+.page-head .sub{color:var(--ink-500);margin-top:6px;font-size:0.95rem;}
+.eyebrow{font-size:0.78rem;font-weight:700;color:var(--violet-deep);letter-spacing:0.02em;margin-bottom:6px;display:block;}
+
+/* generic card */
+.card{background:var(--card);border-radius:var(--radius-md);box-shadow:var(--shadow-soft);padding:22px;border:1px solid var(--line);}
+.card-flat{background:var(--card);border-radius:var(--radius-md);padding:22px;border:1px solid var(--line);}
+.grid{display:grid;gap:18px;}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr);}.grid-3{grid-template-columns:1fr 1fr;}}
+@media (max-width:600px){.grid-3,.grid-2{grid-template-columns:1fr;}.grid-4{grid-template-columns:1fr 1fr;gap:12px;}.stat-value{font-size:1.25rem;}.card{padding:18px;}}
+
+.stat-card{display:flex;flex-direction:column;gap:10px;}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.stat-icon svg{width:19px;height:19px;}
+.stat-label{color:var(--ink-500);font-size:0.82rem;}
+.stat-value{font-size:1.5rem;font-family:var(--font-head);font-weight:700;color:var(--ink-900);}
+.stat-delta{font-size:0.76rem;font-weight:600;}
+
+.task-row{
+  display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card);transition:background .15s;
+}
+.task-row.done{opacity:0.55;}
+.task-row + .task-row{margin-top:10px;}
+.task-dot{width:10px;height:10px;border-radius:50%;flex:none;}
+.task-info{flex:1;min-width:0;}
+.task-subject{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:var(--violet-deep);}
+.task-topic{font-size:0.98rem;font-weight:600;color:var(--ink-900);margin-top:2px;}
+.task-meta{display:flex;gap:10px;margin-top:5px;color:var(--ink-400);font-size:0.78rem;align-items:center;}
+.pill{padding:3px 9px;border-radius:999px;font-size:0.68rem;font-weight:700;}
+.pill-high{background:var(--danger-bg);color:var(--danger);}
+.pill-medium{background:var(--warning-bg);color:var(--warning);}
+.pill-low{background:var(--success-bg);color:var(--success);}
+.task-complete-btn{
+  flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:transparent;
+  display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.task-complete-btn svg{width:16px;height:16px;color:transparent;}
+.task-complete-btn.checked{background:var(--success);border-color:var(--success);}
+.task-complete-btn.checked svg{color:#fff;}
+
+.section-title{font-size:1.05rem;font-weight:700;color:var(--ink-900);margin-bottom:14px;font-family:var(--font-head);}
+.empty-state{text-align:center;padding:40px 20px;color:var(--ink-500);}
+.empty-state svg{width:44px;height:44px;margin:0 auto 14px;color:var(--ink-400);}
+
+/* chat / coach */
+.coach-wrap{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;}
+@media (max-width:900px){.coach-wrap{grid-template-columns:1fr;}}
+.chat-panel{background:var(--card);border-radius:var(--radius-lg);border:1px solid var(--line);display:flex;flex-direction:column;height:min(640px,72vh);overflow:hidden;box-shadow:var(--shadow-soft);}
+.chat-head{padding:18px 20px;border-bottom:1px solid var(--line);}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.msg{max-width:78%;padding:12px 15px;border-radius:16px;font-size:0.92rem;line-height:1.55;}
+.msg.ai{background:var(--paper-dim);color:var(--ink-900);align-self:flex-start;border-bottom-left-radius:4px;}
+.msg.user{background:linear-gradient(135deg,var(--violet),var(--violet-deep));color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.msg.typing{display:flex;gap:5px;align-items:center;padding:14px 16px;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-400);animation:blink 1.2s infinite ease-in-out;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:0.25;}40%{opacity:1;}}
+.chat-input-row{display:flex;gap:10px;padding:16px;border-top:1px solid var(--line);}
+.chat-input-row input{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:0.92rem;background:var(--paper);}
+.chat-input-row input:focus{outline:none;border-color:var(--violet);}
+.send-btn{width:44px;height:44px;border-radius:12px;background:var(--violet);border:none;color:#fff;display:flex;align-items:center;justify-content:center;flex:none;}
+.quick-actions{display:flex;flex-wrap:wrap;gap:8px;}
+.qa-btn{
+  background:var(--paper-dim);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:0.8rem;color:var(--ink-700);font-weight:600;
+  display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.qa-btn:hover{background:#e3ddff;border-color:var(--violet);}
+.qa-btn svg{width:16px;height:16px;flex:none;}
+.coach-side .card{margin-bottom:16px;}
+
+/* forms */
+.form-field{margin-bottom:16px;}
+.form-field label{display:block;font-size:0.82rem;font-weight:600;color:var(--ink-700);margin-bottom:7px;}
+.form-field input[type=text],.form-field input[type=number],.form-field input[type=date],.form-field select,.form-field textarea{
+  width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:0.9rem;background:var(--paper);font-family:inherit;
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:var(--violet);}
+.chip-select{display:flex;flex-wrap:wrap;gap:8px;}
+.chip-opt{padding:9px 15px;border-radius:999px;border:1.5px solid var(--line);font-size:0.85rem;font-weight:600;color:var(--ink-700);background:var(--card);transition:.15s;}
+.chip-opt.selected{background:var(--violet);border-color:var(--violet);color:#fff;}
+.wizard-steps{display:flex;gap:6px;margin-bottom:26px;}
+.wiz-dot{height:5px;flex:1;border-radius:99px;background:var(--line);}
+.wiz-dot.active{background:var(--violet);}
+.wiz-dot.done{background:var(--lavender);}
+
+/* upload */
+.dropzone{
+  border:2px dashed var(--line);border-radius:var(--radius-lg);padding:52px 20px;text-align:center;
+  background:var(--paper-dim);transition:.2s;cursor:pointer;
+}
+.dropzone.drag{border-color:var(--violet);background:#eee9ff;}
+.dropzone svg{width:44px;height:44px;color:var(--violet);margin:0 auto 14px;}
+.upload-tabs{display:flex;gap:8px;margin-bottom:18px;}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{background:var(--paper-dim);color:var(--ink-700);padding:7px 13px;border-radius:999px;font-size:0.82rem;font-weight:600;}
+
+/* quiz */
+.quiz-progress-bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:24px;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--blue-soft));border-radius:99px;transition:width .3s;}
+.option-row{
+  display:flex;align-items:center;gap:12px;padding:15px 16px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;
+  background:var(--card);transition:.15s;
+}
+.option-row:hover{border-color:var(--violet);}
+.option-row.selected{border-color:var(--violet);background:#f0ecff;}
+.option-row.correct{border-color:var(--success);background:var(--success-bg);}
+.option-row.incorrect{border-color:var(--danger);background:var(--danger-bg);}
+.opt-letter{width:28px;height:28px;border-radius:8px;background:var(--paper-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex:none;color:var(--ink-700);}
+.option-row.selected .opt-letter{background:var(--violet);color:#fff;}
+.option-row.correct .opt-letter{background:var(--success);color:#fff;}
+.option-row.incorrect .opt-letter{background:var(--danger);color:#fff;}
+
+.score-ring-wrap{display:flex;justify-content:center;padding:20px 0;}
+
+/* progress rings/bars */
+.ring-svg{transform:rotate(-90deg);}
+.ring-track{stroke:var(--line);}
+.ring-fill{stroke:var(--violet);stroke-linecap:round;transition:stroke-dashoffset 0.6s ease;}
+.subject-progress-row{display:flex;align-items:center;gap:14px;padding:12px 0;}
+.subject-progress-row + .subject-progress-row{border-top:1px solid var(--line);}
+.bar-track{flex:1;height:9px;background:var(--line);border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;}
+
+/* focus mode */
+.focus-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;position:relative;}
+.focus-ambient{position:absolute;inset:0;overflow:hidden;border-radius:var(--radius-lg);pointer-events:none;z-index:0;}
+.focus-ambient .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.5;animation:driftblob 12s ease-in-out infinite;}
+@keyframes driftblob{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,-20px) scale(1.15);}}
+.focus-content{position:relative;z-index:1;}
+.timer-ring-wrap{position:relative;width:280px;height:280px;margin:30px auto;}
+.timer-display{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.timer-time{font-family:var(--font-head);font-size:3.1rem;font-weight:700;color:var(--ink-900);}
+.timer-label{color:var(--ink-500);font-size:0.85rem;margin-top:4px;}
+.timer-controls{display:flex;gap:12px;justify-content:center;margin-top:10px;}
+.round-btn{width:56px;height:56px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-soft);}
+.round-btn.primary{background:var(--violet);color:#fff;width:66px;height:66px;}
+.round-btn.secondary{background:var(--card);color:var(--ink-700);border:1px solid var(--line);}
+.round-btn svg{width:22px;height:22px;}
+
+/* settings */
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);gap:16px;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row .label{font-weight:600;color:var(--ink-900);font-size:0.92rem;}
+.settings-row .desc{color:var(--ink-500);font-size:0.8rem;margin-top:3px;}
+.toggle{width:46px;height:26px;border-radius:99px;background:var(--line);position:relative;border:none;flex:none;}
+.toggle.on{background:var(--violet);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.toggle.on::after{left:23px;}
+.stepper-input{display:flex;align-items:center;gap:12px;}
+.stepper-input button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:1.1rem;color:var(--ink-700);}
+
+/* toast */
+#toast-host{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;}
+.toast{background:var(--ink-900);color:#fff;padding:12px 20px;border-radius:12px;font-size:0.86rem;font-weight:500;box-shadow:0 12px 30px rgba(0,0,0,0.3);display:flex;align-items:center;gap:10px;animation:toastin .25s ease;}
+@keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* material analysis */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media (max-width:800px){.analysis-grid{grid-template-columns:1fr;}}
+
+/* misc */
+.muted{color:var(--ink-500);}
+.mt-8{margin-top:8px;}.mt-16{margin-top:16px;}.mt-24{margin-top:24px;}
+.flex{display:flex;}.items-center{align-items:center;}.justify-between{justify-content:space-between;}.gap-8{gap:8px;}.gap-12{gap:12px;}
+.btn svg{width:16px;height:16px;flex:none;}
+.icon-btn svg{width:18px;height:18px;flex:none;}
+.nav-toggle svg{width:22px;height:22px;}
+.send-btn svg{width:20px;height:20px;}
+.task-meta span{display:inline-flex;align-items:center;gap:4px;}
+.task-meta svg{width:13px;height:13px;flex:none;}
+.fc-value svg.fc-ring{flex:none;}
+.stat-icon svg{flex:none;}
+.hero-illustration > svg{width:100%;height:auto;}
+.toast svg{width:16px;height:16px;flex:none;}
+.timer-controls svg{flex:none;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast-host"></div>
+<script>
+/* ======================================================================
+   LUMILEARN — AI STUDY COACH
+   Single-file SPA. Hash routing. localStorage persistence.
+   ====================================================================== */
+
+/* ---------------------------- ICONS ---------------------------- */
+const ICON = {
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>`,
+  coach:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7 7 0 0 0-7 7c0 2.4 1.2 4.2 2.2 5.3.4.4.6 1 .6 1.5V19a1 1 0 0 0 1 1h6.4a1 1 0 0 0 1-1v-2.2c0-.5.2-1.1.6-1.5C17.8 14.2 19 12.4 19 10a7 7 0 0 0-7-7Z"/><path d="M9.5 21h5"/><circle cx="9.5" cy="10" r=".6" fill="currentColor" stroke="none"/><circle cx="14.5" cy="10" r=".6" fill="currentColor" stroke="none"/></svg>`,
+  plan:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 3v3M16 3v3M3.5 10h17"/><path d="M8 14h2M8 17h5"/></svg>`,
+  upload:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M12 4l-4 4M12 4l4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>`,
+  quiz:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9a3 3 0 1 1 4 2.8c-.8.4-1 .9-1 1.7"/><circle cx="12" cy="17.5" r=".6" fill="currentColor" stroke="none"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg>`,
+  notes:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M14 3.5V8h4"/><path d="M8.5 12.5h7M8.5 15.5h5"/></svg>`,
+  progress:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>`,
+  focus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/></svg>`,
+  settings:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V10c.1.7.6 1.3 1.6 1.4h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+  clock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>`,
+  flame:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4.4 0 7-2.7 7-6.6 0-3.2-1.9-5-3.2-6.9-.3.9-.8 1.9-1.6 2.5.2-2.7-1-5.5-3.5-7.4C11 6 8 8.5 8 12.2c-1.1-.6-1.7-1.8-1.8-3C5.1 10.6 5 12.8 5 14c0 4.4 2.6 8 7 8Z"/></svg>`,
+  target:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>`,
+  spark:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>`,
+  arrowRight:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+  menu:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
+  close:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
+  send:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>`,
+  play:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7Z"/></svg>`,
+  pause:`<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>`,
+  reset:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg>`,
+  file:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M14 3.5V8h4"/></svg>`,
+};
+function icon(name,cls){let s=ICON[name]||'';s=s.replace('<svg ','<svg width="20" height="20" ');return cls?s.replace('<svg ',`<svg class="${cls}" `):s;}
+
+/* ---------------------------- STATE ---------------------------- */
+const STORAGE_KEY='lumilearn_state_v1';
+const SUBJECT_COLORS={Mathematics:'#8b7cf6',Physics:'#6fc7ee',Chemistry:'#2fbf8f',English:'#f4a83c',Biology:'#f0685f'};
+
+function defaultState(){
+  return {
+    user:{name:'Student', examDate:'2026-11-14'},
+    settings:{dailyHours:3, notifications:true, theme:'dark'},
+    streak:4,
+    studyTimeTodayMin:0,
+    subjects:[
+      {name:'Mathematics', progress:62},
+      {name:'Physics', progress:48},
+      {name:'Chemistry', progress:71},
+      {name:'English', progress:55},
+    ],
+    tasks:[
+      {id:'t1', subject:'Mathematics', topic:'Quadratic Equations', duration:45, priority:'High', status:'pending', day:'today'},
+      {id:'t2', subject:'Physics', topic:'Motion', duration:40, priority:'Medium', status:'pending', day:'today'},
+      {id:'t3', subject:'Chemistry', topic:'Atomic Structure', duration:50, priority:'High', status:'pending', day:'today'},
+      {id:'t4', subject:'English', topic:'Grammar Revision', duration:30, priority:'Low', status:'pending', day:'today'},
+    ],
+    planGenerated:false,
+    planMeta:null,
+    quizHistory:[],
+    chatHistory:[
+      {role:'ai', text:"Hi! I'm your AI study coach ✨ Ask me to explain a topic, quiz you, or simplify something tricky."}
+    ],
+    uploadedMaterial:null,
+    revisionNotes:[],
+    focus:{lastSubject:'Mathematics', lastTopic:'Quadratic Equations', sessionsToday:0},
+  };
+}
+let STATE=loadState();
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed=JSON.parse(raw);
+    return Object.assign(defaultState(), parsed);
+  }catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); }catch(e){}
+}
+function resetState(){ STATE=defaultState(); saveState(); }
+
+/* ---------------------------- UTIL ---------------------------- */
+function uid(){return 'id'+Math.random().toString(36).slice(2,10);}
+function el(id){return document.getElementById(id);}
+function fmtMin(m){const h=Math.floor(m/60), mm=m%60; return h>0?`${h}h ${mm}m`:`${mm}m`;}
+function toast(msg){
+  const host=el('toast-host');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`${icon('check','')}<span>${msg}</span>`;
+  host.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300);},2200);
+}
+function subjColor(name){return SUBJECT_COLORS[name]||'#8b7cf6';}
+function ringSvg(pct,size,stroke,colorVar){
+  const r=(size-stroke)/2, c=2*Math.PI*r, off=c-(pct/100)*c;
+  return `<svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle class="ring-track" cx="${size/2}" cy="${size/2}" r="${r}" stroke-width="${stroke}" fill="none"/>
+    <circle class="ring-fill" cx="${size/2}" cy="${size/2}" r="${r}" stroke-width="${stroke}" fill="none" style="stroke:${colorVar||'var(--violet)'}" stroke-dasharray="${c}" stroke-dashoffset="${off}"/>
+  </svg>`;
+}
+</script>
+<script>
+/* ---------------------------- MOCK CONTENT BANKS ---------------------------- */
+const TOPIC_BANK={
+  'Quadratic Equations':{subject:'Mathematics',
+    explain:"A quadratic equation has the form ax² + bx + c = 0. You can solve it by factoring, completing the square, or the quadratic formula: x = (-b ± √(b²-4ac)) / 2a. The graph is always a parabola — if a is positive it opens upward, if negative it opens downward.",
+    simple:"Think of it like this: you're looking for the two 'x' values where a U-shaped curve crosses zero. The formula is just a shortcut so you don't have to guess and check.",
+    example:"Example: x² - 5x + 6 = 0 factors into (x-2)(x-3) = 0, so x = 2 or x = 3."},
+  'Motion':{subject:'Physics',
+    explain:"Motion describes how an object's position changes over time. Key equations: v = u + at, s = ut + ½at², and v² = u² + 2as, where u is initial velocity, v is final velocity, a is acceleration, s is displacement, and t is time.",
+    simple:"Imagine a car speeding up steadily. These formulas just connect how fast it's going, how far it's travelled, and how long it took — pick the formula with the variables you already know.",
+    example:"Example: a car starts at rest (u=0) and accelerates at 2 m/s² for 5s. v = 0 + 2×5 = 10 m/s."},
+  'Atomic Structure':{subject:'Chemistry',
+    explain:"Atoms are made of protons and neutrons in a nucleus, surrounded by electrons in shells. The number of protons defines the element (atomic number), and electron arrangement determines chemical behaviour.",
+    simple:"Picture a tiny solar system: a dense centre (protons + neutrons) with electrons zooming around it in layers, like orbits.",
+    example:"Example: Carbon has 6 protons and 6 electrons arranged as 2 in the first shell and 4 in the second."},
+  'Grammar Revision':{subject:'English',
+    explain:"Strong grammar comes down to subject-verb agreement, consistent tense, and correct punctuation. Read sentences aloud — if it sounds off, check the verb form or the comma placement first.",
+    simple:"Rule of thumb: one subject, one matching verb. 'The team is' not 'the team are' (in most style guides), because 'team' is treated as one unit.",
+    example:"Example: 'She has completed the assignment' (present perfect) vs 'She completed the assignment yesterday' (simple past)."},
+  'Photosynthesis':{subject:'Biology',
+    explain:"Photosynthesis is the process plants use to convert light energy into chemical energy. In the chloroplasts, carbon dioxide and water combine using sunlight to produce glucose and oxygen: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂.",
+    simple:"Plants basically 'eat' sunlight, water, and air to make their own sugar, and breathe out oxygen as a bonus for the rest of us.",
+    example:"Example: on a sunny day, a leaf's chlorophyll captures light energy and its stomata take in CO₂ to keep the reaction going."},
+};
+const QUIZ_BANK={
+  'Quadratic Equations':[
+    {q:'What is the standard form of a quadratic equation?',opts:['ax + b = 0','ax² + bx + c = 0','ax³ + bx² = 0','a/x + b = 0'],a:1},
+    {q:'The quadratic formula is x = ?',opts:['(-b ± √(b²-4ac)) / 2a','-b / a','b² - 4ac','(a+b)/c'],a:0},
+    {q:'What shape does a quadratic graph make?',opts:['Straight line','Circle','Parabola','Hyperbola'],a:2},
+    {q:'Factor x² - 5x + 6 = 0. What are the roots?',opts:['x=1, x=6','x=2, x=3','x=-2, x=-3','x=0, x=5'],a:1},
+    {q:'If the discriminant (b²-4ac) is negative, the roots are:',opts:['Real and equal','Real and distinct','Complex (no real roots)','Zero'],a:2},
+  ],
+  'Motion':[
+    {q:'Which equation relates final velocity, initial velocity, and time?',opts:['v = u + at','s = ut','v² = 2s','a = s/t²'],a:0},
+    {q:'What is the SI unit of acceleration?',opts:['m/s','m/s²','N','m'],a:1},
+    {q:'A body at rest has an initial velocity of:',opts:['1 m/s','Undefined','0 m/s','Depends on mass'],a:2},
+    {q:'Displacement differs from distance because it:',opts:['Is always larger','Includes direction','Ignores time','Is measured in seconds'],a:1},
+    {q:"v² = u² + 2as is used when you don't know:",opts:['Time','Acceleration','Distance','Velocity'],a:0},
+  ],
+  'Atomic Structure':[
+    {q:'What defines the atomic number of an element?',opts:['Number of neutrons','Number of protons','Number of electrons shells','Atomic mass'],a:1},
+    {q:'Where are electrons found in an atom?',opts:['In the nucleus','Orbiting shells around the nucleus','Fused with protons','Outside the atom'],a:1},
+    {q:'Carbon has how many protons?',opts:['4','6','8','12'],a:1},
+    {q:'Neutrons carry what charge?',opts:['Positive','Negative','Neutral','Variable'],a:2},
+    {q:'Isotopes of an element differ in their number of:',opts:['Protons','Electrons','Neutrons','Charge'],a:2},
+  ],
+  'Grammar Revision':[
+    {q:'"The team ___ winning." Choose the correct verb.',opts:['is','are','were','be'],a:0},
+    {q:'Which sentence uses present perfect tense?',opts:['She ran home.','She has run home.','She will run home.','She runs home.'],a:1},
+    {q:'Identify the correctly punctuated sentence.',opts:['Lets eat, Grandma.',"Let's eat, Grandma.",'Lets, eat Grandma','Lets eat Grandma please'],a:1},
+    {q:'"Neither of the boys ___ ready." Pick the verb.',opts:['is','are','were','have'],a:0},
+    {q:'Which is a compound sentence?',opts:['I like tea.','I like tea, but she prefers coffee.','Drinking tea.','Tea is hot.'],a:1},
+  ],
+  'Photosynthesis':[
+    {q:'Photosynthesis converts light energy into:',opts:['Kinetic energy','Chemical energy','Sound energy','Nuclear energy'],a:1},
+    {q:'What gas do plants release during photosynthesis?',opts:['Carbon dioxide','Nitrogen','Oxygen','Hydrogen'],a:2},
+    {q:'Where does photosynthesis mainly occur in a plant cell?',opts:['Nucleus','Mitochondria','Chloroplast','Ribosome'],a:2},
+    {q:'Which raw materials are needed for photosynthesis?',opts:['Glucose and oxygen','CO₂ and water','Nitrogen and water','Oxygen and nitrogen'],a:1},
+    {q:'The green pigment that absorbs light is called:',opts:['Melanin','Chlorophyll','Keratin','Carotene'],a:1},
+  ],
+};
+const ALL_TOPICS=Object.keys(TOPIC_BANK);
+
+function getMockAIResponse(userText, intent){
+  const text=userText.toLowerCase();
+  const topic=ALL_TOPICS.find(t=>text.includes(t.toLowerCase())) ||
+    (text.includes('math')||text.includes('quadratic')?'Quadratic Equations':
+     text.includes('physic')||text.includes('motion')||text.includes('force')?'Motion':
+     text.includes('chem')||text.includes('atom')?'Atomic Structure':
+     text.includes('english')||text.includes('grammar')?'Grammar Revision':
+     text.includes('photosynth')||text.includes('biology')||text.includes('plant')?'Photosynthesis':null);
+
+  if(intent==='quiz' || text.includes('quiz') || text.includes('test me')){
+    return topic ? `Great — I can generate a ${QUIZ_BANK[topic]?.length||5}-question quiz on ${topic}. Head to the Quizzes tab, pick "${topic}" as the topic, choose a difficulty, and I'll build it instantly.` :
+      `I'd love to quiz you! Tell me a topic (like "Motion" or "Atomic Structure") or open the Quizzes tab and pick one from the list.`;
+  }
+  if(intent==='notes' || text.includes('revision note') || text.includes('summar')){
+    return topic ? `I've drafted revision notes for ${topic} — check the Revision Notes tab, or say "add ${topic} notes to my plan" and I'll fold it into your schedule.` :
+      `Tell me which topic you'd like revision notes for and I'll put together a summary, key points, and definitions.`;
+  }
+  if(intent==='simple' || text.includes('simpler') || text.includes('easier')){
+    if(topic) return TOPIC_BANK[topic].simple;
+    return "Sure — tell me the topic you're stuck on and I'll break it down in the simplest way possible.";
+  }
+  if(intent==='example' || text.includes('example')){
+    if(topic) return TOPIC_BANK[topic].example;
+    return "Happy to give an example — which topic are you working through?";
+  }
+  if(intent==='explain' || text.includes('explain')){
+    if(topic) return TOPIC_BANK[topic].explain;
+  }
+  if(topic) return TOPIC_BANK[topic].explain;
+  const fallbacks=[
+    "Good question. Could you tell me which subject or topic this relates to, so I can give you a precise explanation?",
+    "I can explain a topic, build you a quiz, write revision notes, or simplify something tricky — what would help most right now?",
+    "Let's dig into that. Which chapter or concept should I focus on?",
+  ];
+  return fallbacks[Math.floor(Math.random()*fallbacks.length)];
+}
+</script>
+<script>
+/* ---------------------------- ROUTER ---------------------------- */
+const ROUTES=['home','coach','plan','upload','quiz','notes','progress','focus','settings'];
+function currentRoute(){
+  const h=location.hash.replace('#/','');
+  if(h===''||h==='/') return {area:'landing'};
+  if(h.startsWith('app')){
+    const parts=h.split('/').filter(Boolean); // ['app','home']
+    const page=parts[1]||'home';
+    return {area:'app', page: ROUTES.includes(page)?page:'home'};
+  }
+  return {area:'landing'};
+}
+function navigate(hash){ location.hash=hash; }
+window.addEventListener('hashchange', function(){
+  const h=location.hash;
+  // in-page landing anchors (e.g. #how, #features) shouldn't trigger a full SPA re-render
+  if(h==='#how' || h==='#features'){ return; }
+  render();
+});
+window.addEventListener('DOMContentLoaded', render);
+
+function render(){
+  const r=currentRoute();
+  if(r.area==='landing'){ renderLanding(); }
+  else { renderAppShell(r.page); }
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+
+/* ---------------------------- LANDING PAGE ---------------------------- */
+function studentIllustrationSVG(){
+  return `
+  <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="deskG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1b2447"/><stop offset="100%" stop-color="#141a34"/>
+      </linearGradient>
+      <linearGradient id="hairG" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#3a2e63"/><stop offset="100%" stop-color="#251d45"/>
+      </linearGradient>
+      <linearGradient id="hoodieG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b7cf6"/><stop offset="100%" stop-color="#6c5ce0"/>
+      </linearGradient>
+      <radialGradient id="glowG" cx="50%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#8b7cf6" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#8b7cf6" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="screenG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c3b6ff"/><stop offset="100%" stop-color="#6fc7ee"/>
+      </linearGradient>
+    </defs>
+    <circle cx="290" cy="200" r="230" fill="url(#glowG)"/>
+    <ellipse cx="280" cy="470" rx="220" ry="26" fill="#000" opacity="0.28"/>
+    <!-- desk -->
+    <rect x="60" y="380" width="440" height="20" rx="6" fill="url(#deskG)"/>
+    <rect x="90" y="400" width="18" height="70" fill="#0f1424"/>
+    <rect x="440" y="400" width="18" height="70" fill="#0f1424"/>
+    <!-- books stack -->
+    <g>
+      <rect x="380" y="352" width="90" height="16" rx="3" fill="#6fc7ee"/>
+      <rect x="388" y="336" width="76" height="16" rx="3" fill="#f4a83c"/>
+      <rect x="382" y="320" width="82" height="16" rx="3" fill="#f0685f"/>
+    </g>
+    <!-- plant -->
+    <g>
+      <path d="M104 372c-4-18 6-30 6-30s10 12 6 30" fill="#2fbf8f"/>
+      <path d="M100 372c-8-14 0-28 0-28s8 14 0 28" fill="#3fd6a2"/>
+      <path d="M110 372c6-16-2-30-2-30s-8 14-2 30" fill="#2fbf8f"/>
+      <rect x="94" y="370" width="26" height="20" rx="4" fill="#b9a6ff"/>
+    </g>
+    <!-- laptop -->
+    <g>
+      <rect x="200" y="352" width="150" height="10" rx="3" fill="#1b2447"/>
+      <path d="M195 352h160l10 -78a8 8 0 0 0 -8 -9H193a8 8 0 0 0 -8 9Z" fill="#0d1326" stroke="#28315c" stroke-width="2"/>
+      <rect x="203" y="273" width="134" height="72" rx="4" fill="url(#screenG)" opacity="0.92"/>
+      <rect x="212" y="282" width="60" height="7" rx="3" fill="#0d1326" opacity="0.35"/>
+      <rect x="212" y="295" width="90" height="5" rx="2" fill="#0d1326" opacity="0.25"/>
+      <rect x="212" y="305" width="80" height="5" rx="2" fill="#0d1326" opacity="0.25"/>
+      <rect x="212" y="322" width="46" height="18" rx="4" fill="#0d1326" opacity="0.3"/>
+    </g>
+    <!-- desk items: cup, notes -->
+    <rect x="150" y="346" width="30" height="34" rx="4" fill="#f4a83c"/>
+    <rect x="150" y="346" width="30" height="8" rx="4" fill="#ffd08a"/>
+    <rect x="370" y="360" width="30" height="22" rx="3" fill="#eceaf8" transform="rotate(-6 370 360)"/>
+    <!-- student -->
+    <g>
+      <!-- chair back hint -->
+      <path d="M245 250c40-14 90-14 130 0l6 60H239Z" fill="#1b2447" opacity="0.5"/>
+      <!-- torso / hoodie -->
+      <path d="M235 300c8-34 24-46 55-46s47 12 55 46l6 46H229Z" fill="url(#hoodieG)"/>
+      <path d="M255 258c4 10 6 18 6 26h-4c-4-10-8-18-14-24Z" fill="#7b6ef0"/>
+      <path d="M325 258c-4 10-6 18-6 26h4c4-10 8-18 14-24Z" fill="#7b6ef0"/>
+      <!-- arms to laptop -->
+      <path d="M250 310c-10 14-14 26-12 40l38 6 4-18-24-8c0-8 2-14 6-20Z" fill="url(#hoodieG)"/>
+      <path d="M310 310c10 14 14 26 12 40l-38 6-4-18 24-8c0-8-2-14-6-20Z" fill="url(#hoodieG)"/>
+      <!-- neck -->
+      <rect x="270" y="228" width="20" height="22" rx="8" fill="#f2c9a4"/>
+      <!-- head -->
+      <circle cx="280" cy="205" r="34" fill="#f6d3ae"/>
+      <!-- hair back -->
+      <path d="M244 205c-2-30 16-52 36-52s38 22 36 52c0 6-2 12-4 16-2-14-8-22-16-26 2 8 0 16-4 22-6-10-14-16-22-18 0 8-4 14-10 18-4-6-6-12-6-18-4 2-8 6-10 6Z" fill="url(#hairG)"/>
+      <!-- hair front / bangs -->
+      <path d="M248 196c6-20 20-32 32-32s26 12 32 32c-6-8-14-12-22-12-2 6-6 10-10 12-2-6-6-10-10-10-4 4-6 8-6 14-6-2-12-2-16-4Z" fill="url(#hairG)"/>
+      <!-- face features -->
+      <ellipse cx="269" cy="208" rx="3" ry="4" fill="#251d45"/>
+      <ellipse cx="291" cy="208" rx="3" ry="4" fill="#251d45"/>
+      <path d="M270 222c4 3 10 3 14 0" stroke="#c9765a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M262 197c4-3 9-3 12-1M286 196c3-2 8-2 12 1" stroke="#4a3a78" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="262" cy="216" rx="5" ry="3.4" fill="#f5a8a0" opacity="0.55"/>
+      <ellipse cx="298" cy="216" rx="5" ry="3.4" fill="#f5a8a0" opacity="0.55"/>
+    </g>
+    <!-- floating AI sparkles -->
+    <g fill="#c3b6ff">
+      <circle cx="420" cy="200" r="3.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="440" cy="240" r="2.2"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="140" cy="230" r="2.6"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.1s" repeatCount="indefinite"/></circle>
+      <circle cx="120" cy="180" r="2" fill="#6fc7ee"><animate attributeName="opacity" values="1;0.3;1" dur="2.6s" repeatCount="indefinite"/></circle>
+    </g>
+  </svg>`;
+}
+
+function renderLanding(){
+  const app=el('app');
+  app.innerHTML=`
+  <div class="landing">
+    <nav class="l-nav"><div class="wrap">
+      <div class="brand"><span class="brand-mark"></span>LumiLearn</div>
+      <div class="l-links">
+        <a href="#/">Home</a><a href="#how">How It Works</a><a href="#features">Features</a><a href="#/app/coach" id="nav-ai-coach">AI Coach</a>
+      </div>
+      <div class="l-actions">
+        <a class="btn btn-ghost btn-sm" href="#/app/home" id="signin-btn">Sign In</a>
+        <a class="btn btn-primary" href="#/app/home" id="start-btn-nav">Start Learning</a>
+        <button class="nav-toggle" id="mobile-nav-toggle">${icon('menu')}</button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#/">Home</a><a href="#how">How It Works</a><a href="#features">Features</a><a href="#/app/coach">AI Coach</a><a href="#/app/home">Start Learning</a>
+    </div>
+    </nav>
+
+    <header class="hero"><div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow-pill"><span class="dot"></span>AI-powered study coach</span>
+        <h1>Don't just plan your study.<br><em>Study smarter with AI.</em></h1>
+        <p class="sub">Your personal AI study coach that explains difficult topics, creates quizzes, builds study plans and helps you improve — one focused session at a time.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#/app/home" id="start-learning-free">Start Learning Free ${icon('arrowRight')}</a>
+          <a class="btn btn-ghost" href="#how">See How It Works</a>
+        </div>
+        <div class="feature-strip">
+          <span class="chip">${icon('spark')}AI Explanations</span>
+          <span class="chip">${icon('plan')}Smart Study Plans</span>
+          <span class="chip">${icon('quiz')}Instant Quizzes</span>
+          <span class="chip">${icon('target')}Weak Topic Detection</span>
+          <span class="chip">${icon('progress')}Progress Tracking</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-illustration">
+          ${studentIllustrationSVG()}
+          <div class="floating-card card-a">
+            <div class="fc-title">AI Coach</div>
+            <div class="fc-value">${icon('coach','fc-ring')} "Explain quadratics?"</div>
+          </div>
+          <div class="floating-card card-b">
+            <div class="fc-title">Today's Progress</div>
+            <div class="fc-value">${ringSvg(68,34,4)} 68% complete</div>
+          </div>
+        </div>
+      </div>
+    </div></header>
+
+    <section class="section" id="how"><div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">How it works</span>
+        <h2>From notes to mastery in three steps</h2>
+        <p>No setup headaches. Upload what you're learning, and let LumiLearn do the heavy lifting.</p>
+      </div>
+      <div class="steps">
+        <div class="step-card reveal"><div class="step-num">01</div><h3>Add your study material</h3><p>Upload a chapter, notes, PDF or photo of your textbook — or just tell your AI coach what you're working on.</p></div>
+        <div class="step-card reveal"><div class="step-num">02</div><h3>Let LumiLearn understand it</h3><p>We break your material into key concepts, difficult topics, and a quick summary so you know exactly where to focus.</p></div>
+        <div class="step-card reveal"><div class="step-num">03</div><h3>Study with your personalized AI coach</h3><p>Get explanations, quizzes, and revision notes generated on demand — all tracked in one adaptive study plan.</p></div>
+      </div>
+    </div></section>
+
+    <section class="section" id="features"><div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">Everything you need</span>
+        <h2>One coach. Every study habit covered.</h2>
+        <p>LumiLearn replaces a stack of separate apps — planner, flashcards, quiz maker — with one connected experience.</p>
+      </div>
+      <div class="feat-grid">
+        ${featureCard('coach','AI Study Coach',"Ask anything about what you're studying and get clear, student-friendly explanations instantly.")}
+        ${featureCard('plan','Smart Study Planner','A personalized schedule built around your subjects, exam dates and daily study hours.')}
+        ${featureCard('upload','Upload & Learn','Drop in a chapter, notes or a photo and get key concepts and difficult topics extracted automatically.')}
+        ${featureCard('quiz','AI Quiz Generator','Instant multiple-choice quizzes on any topic, with automatic scoring and weak-topic detection.')}
+        ${featureCard('notes','Revision Notes','Clean, AI-generated summaries with key points, definitions and examples for fast review.')}
+        ${featureCard('target','Weak Topic Detection',"LumiLearn spots the concepts you're struggling with and routes more practice your way.")}
+        ${featureCard('progress','Progress Tracking','Visual dashboards for study hours, quiz scores, streaks and subject-by-subject mastery.')}
+        ${featureCard('focus','Focus Mode','A distraction-free Pomodoro timer that keeps sessions short, focused and satisfying.')}
+      </div>
+    </div></section>
+
+    <section class="section"><div class="wrap">
+      <div class="final-cta">
+        <h2>Ready to make studying feel lighter?</h2>
+        <p>Jump into your dashboard — no signup friction, just start learning.</p>
+        <a class="btn btn-light" href="#/app/home">Start Learning Free ${icon('arrowRight')}</a>
+      </div>
+    </div></section>
+
+    <footer class="l-footer"><div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:10px;">
+      <span>© 2026 LumiLearn. Built as a portfolio concept.</span>
+      <span>Made for focused students everywhere.</span>
+    </div></footer>
+  </div>`;
+
+  // scroll reveal
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in-view'); });
+  },{threshold:0.2});
+  document.querySelectorAll('.step-card').forEach(c=>io.observe(c));
+
+  const toggleBtn=el('mobile-nav-toggle');
+  if(toggleBtn){
+    toggleBtn.onclick=function(){
+      const menu=el('mobile-menu');
+      const isOpen=menu.classList.toggle('open');
+      toggleBtn.innerHTML=isOpen?icon('close'):icon('menu');
+    };
+  }
+  document.querySelectorAll('#mobile-menu a').forEach(a=>{
+    a.addEventListener('click',()=>{ el('mobile-menu').classList.remove('open'); toggleBtn.innerHTML=icon('menu'); });
+  });
+}
+function featureCard(iconName,title,desc){
+  return `<div class="feat-card"><div class="feat-icon">${icon(iconName)}</div><h3>${title}</h3><p>${desc}</p></div>`;
+}
+</script>
+<script>
+/* ---------------------------- APP SHELL ---------------------------- */
+const NAV_ITEMS=[
+  {key:'home',label:'Home',icon:'home'},
+  {key:'coach',label:'AI Coach',icon:'coach'},
+  {key:'plan',label:'Study Plan',icon:'plan'},
+  {key:'upload',label:'Upload & Learn',icon:'upload'},
+  {key:'quiz',label:'Quizzes',icon:'quiz'},
+  {key:'notes',label:'Revision Notes',icon:'notes'},
+  {key:'progress',label:'Progress',icon:'progress'},
+  {key:'focus',label:'Focus Mode',icon:'focus'},
+];
+const BOTTOM_NAV=['home','coach','plan','quiz','progress'];
+const PAGE_RENDERERS={
+  home:()=>renderHome(), coach:()=>renderCoach(), plan:()=>renderPlan(), upload:()=>renderUpload(),
+  quiz:()=>renderQuiz(), notes:()=>renderNotes(), progress:()=>renderProgress(), focus:()=>renderFocus(), settings:()=>renderSettings(),
+};
+const PAGE_MOUNTERS={
+  home:()=>mountHome(), coach:()=>mountCoach(), plan:()=>mountPlan(), upload:()=>mountUpload(),
+  quiz:()=>mountQuiz(), notes:()=>mountNotes(), progress:()=>mountProgress(), focus:()=>mountFocus(), settings:()=>mountSettings(),
+};
+
+function renderAppShell(page){
+  const app=el('app');
+  app.innerHTML=`
+  <div class="appshell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark"></span>LumiLearn</div>
+      <nav class="side-nav">
+        ${NAV_ITEMS.map(n=>`<a class="side-link ${n.key===page?'active':''}" href="#/app/${n.key}">${icon(n.icon)}<span>${n.label}</span></a>`).join('')}
+      </nav>
+      <div class="side-bottom">
+        <a class="side-link ${page==='settings'?'active':''}" href="#/app/settings">${icon('settings')}<span>Settings</span></a>
+        <div class="side-profile">
+          <div class="avatar">${(STATE.user.name||'S').slice(0,1)}</div>
+          <div class="who"><div class="name">${STATE.user.name}</div><div class="role">Free plan</div></div>
+        </div>
+      </div>
+    </aside>
+    <div class="main-col">
+      <div class="topbar">
+        <div class="brand"><span class="brand-mark"></span>LumiLearn</div>
+        <a class="icon-btn" href="#/app/settings">${icon('settings')}</a>
+      </div>
+      <main class="content" id="page-content"></main>
+      <nav class="bottom-nav">
+        ${BOTTOM_NAV.map(k=>{const n=NAV_ITEMS.find(x=>x.key===k);return `<a class="bn-link ${k===page?'active':''}" href="#/app/${k}">${icon(n.icon)}<span>${n.label.split(' ')[0]}</span></a>`;}).join('')}
+      </nav>
+    </div>
+  </div>`;
+  el('page-content').innerHTML=PAGE_RENDERERS[page]();
+  if(PAGE_MOUNTERS[page]) PAGE_MOUNTERS[page]();
+}
+
+function rerenderPage(){
+  const r=currentRoute();
+  if(r.area!=='app') return;
+  const container=el('page-content');
+  if(!container) return;
+  container.innerHTML=PAGE_RENDERERS[r.page]();
+  if(PAGE_MOUNTERS[r.page]) PAGE_MOUNTERS[r.page]();
+  // refresh sidebar active state / profile bits without full shell rebuild
+}
+</script>
+<script>
+/* ---------------------------- HOME DASHBOARD ---------------------------- */
+function greetingTime(){
+  const h=new Date().getHours();
+  if(h<12) return 'Good morning';
+  if(h<18) return 'Good afternoon';
+  return 'Good evening';
+}
+function renderHome(){
+  const todays=STATE.tasks.filter(t=>t.day==='today');
+  const done=todays.filter(t=>t.status==='completed').length;
+  const overallProgress=Math.round(STATE.subjects.reduce((s,x)=>s+x.progress,0)/STATE.subjects.length);
+  const totalPlanned=todays.reduce((s,t)=>s+t.duration,0);
+  const allDone = todays.length>0 && done===todays.length;
+  const missed = STATE.tasks.some(t=>t.status==='missed');
+
+  return `
+    <div class="page-head">
+      <div>
+        <span class="eyebrow">Dashboard</span>
+        <h1>${greetingTime()}, ${STATE.user.name} 👋</h1>
+        <p class="sub">Let's make today count.</p>
+      </div>
+      <a href="#/app/focus" class="btn btn-primary">${icon('focus')}Start Focus Session</a>
+    </div>
+
+    <div class="grid grid-4 mt-24">
+      ${statCard('clock','Today\'s Study Time', fmtMin(STATE.studyTimeTodayMin), `${done}/${todays.length} tasks done`, '#8b7cf6')}
+      ${statCard('progress','Overall Progress', overallProgress+'%', 'Across all subjects', '#6fc7ee')}
+      ${statCard('flame','Current Streak', STATE.streak+' days', STATE.streak>=3?'Keep it going!':'Build momentum', '#f4a83c')}
+      ${statCard('target','Next Exam', STATE.user.examDate?fmtDate(STATE.user.examDate):'Not set', STATE.user.examDate?daysUntil(STATE.user.examDate)+' days left':'Add one in Settings', '#f0685f')}
+    </div>
+
+    ${missed?`<div class="card mt-24" style="border-color:var(--warning);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div><div style="font-weight:700;color:var(--ink-900);">Your task wasn't completed.</div><div class="muted" style="font-size:0.85rem;margin-top:2px;">Let's redistribute it across your remaining days.</div></div>
+      <button class="btn btn-primary btn-sm" id="reschedule-from-home">Reschedule My Plan</button>
+    </div>`:''}
+
+    <div class="card mt-24">
+      <div class="flex justify-between items-center" style="margin-bottom:16px;">
+        <div class="section-title" style="margin-bottom:0;">Today's Study Plan</div>
+        <span class="muted" style="font-size:0.82rem;">${fmtMin(totalPlanned)} planned</span>
+      </div>
+      ${todays.length===0?emptyState('plan','No tasks yet','Generate a study plan to see your day here.','Create Study Plan','#/app/plan'):
+        todays.map(t=>taskRowHTML(t)).join('')}
+      ${allDone?`<div class="mt-16" style="text-align:center;padding:14px;background:var(--success-bg);border-radius:12px;color:var(--success);font-weight:600;">🎉 All tasks complete for today — great work!</div>`:''}
+    </div>
+
+    <div class="grid grid-2 mt-24">
+      <div class="card">
+        <div class="section-title">Subject Snapshot</div>
+        ${STATE.subjects.map(s=>`
+          <div class="subject-progress-row">
+            <span style="font-size:0.88rem;font-weight:600;color:var(--ink-900);width:110px;flex:none;">${s.name}</span>
+            <div class="bar-track"><div class="bar-fill" style="width:${s.progress}%;background:${subjColor(s.name)}"></div></div>
+            <span class="muted" style="font-size:0.8rem;width:34px;text-align:right;">${s.progress}%</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="section-title">Quick Actions</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="#/app/coach" class="qa-btn" style="justify-content:flex-start;">${icon('coach')}Ask AI Coach a question</a>
+          <a href="#/app/upload" class="qa-btn" style="justify-content:flex-start;">${icon('upload')}Upload new material</a>
+          <a href="#/app/quiz" class="qa-btn" style="justify-content:flex-start;">${icon('quiz')}Take a quick quiz</a>
+          <a href="#/app/focus" class="qa-btn" style="justify-content:flex-start;">${icon('focus')}Start a focus session</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function statCard(iconName,label,value,delta,color){
+  return `<div class="card stat-card">
+    <div class="stat-icon" style="background:${color}22;color:${color}"><span style="color:${color};display:flex">${icon(iconName)}</span></div>
+    <div class="stat-label">${label}</div>
+    <div class="stat-value">${value}</div>
+    <div class="stat-delta" style="color:${color}">${delta}</div>
+  </div>`;
+}
+function emptyState(iconName,title,desc,cta,href){
+  return `<div class="empty-state">${icon(iconName)}<div style="font-weight:700;color:var(--ink-900);margin-bottom:4px;">${title}</div><p style="margin-bottom:16px;">${desc}</p>${cta?`<a href="${href}" class="btn btn-primary btn-sm">${cta}</a>`:''}</div>`;
+}
+function taskRowHTML(t){
+  const done=t.status==='completed';
+  return `<div class="task-row ${done?'done':''}" data-task="${t.id}">
+    <span class="task-dot" style="background:${subjColor(t.subject)}"></span>
+    <div class="task-info">
+      <div class="task-subject">${t.subject}</div>
+      <div class="task-topic" style="${done?'text-decoration:line-through;':''}">${t.topic}</div>
+      <div class="task-meta">
+        <span>${icon('clock')} ${t.duration} min</span>
+        <span class="pill pill-${t.priority.toLowerCase()}">${t.priority}</span>
+        ${t.status==='missed'?'<span class="pill" style="background:var(--danger-bg);color:var(--danger)">Missed</span>':''}
+      </div>
+    </div>
+    <button class="task-complete-btn ${done?'checked':''}" data-toggle="${t.id}">${icon('check')}</button>
+  </div>`;
+}
+function fmtDate(d){ const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString(undefined,{month:'short',day:'numeric'}); }
+function daysUntil(d){ const dt=new Date(d+'T00:00:00'); const diff=Math.ceil((dt-new Date())/86400000); return Math.max(diff,0); }
+
+function mountHome(){
+  el('page-content').onclick = function(e){
+    const toggleId=e.target.closest('[data-toggle]')?.getAttribute('data-toggle');
+    if(toggleId){
+      const t=STATE.tasks.find(x=>x.id===toggleId);
+      if(t){
+        if(t.status==='completed'){ t.status='pending'; STATE.studyTimeTodayMin=Math.max(0,STATE.studyTimeTodayMin-t.duration); }
+        else{ t.status='completed'; STATE.studyTimeTodayMin+=t.duration;
+          const subj=STATE.subjects.find(s=>s.name===t.subject);
+          if(subj) subj.progress=Math.min(100, subj.progress+2);
+          toast('Task completed — nice work!');
+        }
+        saveState();
+        rerenderPage();
+      }
+      return;
+    }
+    if(e.target.closest('#reschedule-from-home')){
+      rescheduleUnfinished();
+      toast('Plan rescheduled');
+      rerenderPage();
+    }
+  };
+}
+function rescheduleUnfinished(){
+  STATE.tasks.forEach(t=>{ if(t.status==='pending' && t.day==='today'){ t.day='tomorrow'; } if(t.status==='missed'){ t.day='tomorrow'; t.status='pending'; } });
+  saveState();
+}
+</script>
+<script>
+/* ---------------------------- AI COACH ---------------------------- */
+const QUICK_ACTIONS=[
+  {label:'Explain this topic', intent:'explain'},
+  {label:'Make a quiz', intent:'quiz'},
+  {label:'Create revision notes', intent:'notes'},
+  {label:'Make this easier', intent:'simple'},
+  {label:'Give me examples', intent:'example'},
+  {label:'Test me', intent:'quiz'},
+];
+function renderCoach(){
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">AI Coach</span><h1>Your AI Study Coach ✨</h1><p class="sub">Ask me anything about what you're studying.</p></div>
+    </div>
+    <div class="coach-wrap mt-24">
+      <div class="chat-panel">
+        <div class="chat-head">
+          <div class="quick-actions">
+            ${QUICK_ACTIONS.map(a=>`<button class="qa-btn" data-intent="${a.intent}" data-label="${a.label}">${a.label}</button>`).join('')}
+          </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          ${STATE.chatHistory.map(m=>`<div class="msg ${m.role}">${m.text}</div>`).join('')}
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask anything about what you're studying…" autocomplete="off">
+          <button class="send-btn" id="chat-send">${icon('send')}</button>
+        </div>
+      </div>
+      <div class="coach-side">
+        <div class="card">
+          <div class="section-title">Suggested Topics</div>
+          <div class="tag-list">${ALL_TOPICS.map(t=>`<span class="tag" data-topic-chip="${t}" style="cursor:pointer;">${t}</span>`).join('')}</div>
+        </div>
+        <div class="card">
+          <div class="section-title">Tips</div>
+          <p class="muted" style="font-size:0.85rem;line-height:1.6;">Mention a subject or topic by name (like "Motion" or "Atomic Structure") for the most precise explanation.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function pushChat(role,text){
+  STATE.chatHistory.push({role,text});
+  saveState();
+  const box=el('chat-messages');
+  if(box){ const d=document.createElement('div'); d.className='msg '+role; d.textContent=text; box.appendChild(d); box.scrollTop=box.scrollHeight; }
+}
+function showTyping(){
+  const box=el('chat-messages'); if(!box) return null;
+  const d=document.createElement('div'); d.className='msg ai typing'; d.id='typing-indicator';
+  d.innerHTML=`<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+  return d;
+}
+function sendCoachMessage(text, intent){
+  if(!text || !text.trim()) return;
+  pushChat('user', text);
+  const inputEl=el('chat-input'); if(inputEl) inputEl.value='';
+  const typingEl=showTyping();
+  setTimeout(()=>{
+    if(typingEl) typingEl.remove();
+    const resp=getMockAIResponse(text, intent);
+    pushChat('ai', resp);
+  }, 700+Math.random()*500);
+}
+function mountCoach(){
+  const box=el('chat-messages'); if(box) box.scrollTop=box.scrollHeight;
+  el('page-content').onclick=function(e){
+    const qa=e.target.closest('[data-intent]');
+    if(qa){ sendCoachMessage(qa.getAttribute('data-label'), qa.getAttribute('data-intent')); return; }
+    const chip=e.target.closest('[data-topic-chip]');
+    if(chip){ sendCoachMessage('Explain '+chip.getAttribute('data-topic-chip'), 'explain'); return; }
+    if(e.target.closest('#chat-send')){ sendCoachMessage(el('chat-input').value,'explain'); return; }
+  };
+  el('page-content').onkeydown=function(e){
+    if(e.target && e.target.id==='chat-input' && e.key==='Enter'){ sendCoachMessage(el('chat-input').value,'explain'); }
+  };
+}
+</script>
+<script>
+/* ---------------------------- STUDY PLAN (WIZARD) ---------------------------- */
+let PLAN_WIZ={step:1, subjects:[], examDate: STATE.user.examDate||'', dailyHours: STATE.settings.dailyHours||3, difficulty:'Medium', priority:'Balanced'};
+const WIZ_STEPS=['Subjects','Topics','Exam Date','Daily Hours','Difficulty','Priority'];
+
+function renderPlan(){
+  const hasPlan=STATE.planGenerated;
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">Study Plan</span><h1>AI Study Plan</h1><p class="sub">A personalized schedule built around your subjects and goals.</p></div>
+      ${hasPlan?`<div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-outline-dark btn-sm" id="regenerate-plan">Regenerate Plan</button>
+        <button class="btn btn-primary btn-sm" id="reschedule-plan">Reschedule Unfinished Tasks</button>
+      </div>`:''}
+    </div>
+
+    ${hasPlan ? renderPlanBoard() : renderPlanWizard()}
+  `;
+}
+function renderPlanWizard(){
+  const s=PLAN_WIZ.step;
+  return `
+    <div class="card" style="max-width:640px;">
+      <div class="wizard-steps">${WIZ_STEPS.map((_,i)=>`<div class="wiz-dot ${i+1===s?'active':i+1<s?'done':''}"></div>`).join('')}</div>
+      <div class="muted" style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;">Step ${s} of ${WIZ_STEPS.length}</div>
+      <h2 style="font-size:1.3rem;margin-bottom:20px;">${WIZ_STEPS[s-1]}</h2>
+      ${wizStepBody(s)}
+      <div class="flex justify-between mt-24">
+        <button class="btn btn-outline-dark btn-sm" id="wiz-back" ${s===1?'style="visibility:hidden"':''}>Back</button>
+        <button class="btn btn-primary" id="wiz-next">${s===WIZ_STEPS.length?'Generate My Plan':'Continue'} ${icon('arrowRight')}</button>
+      </div>
+    </div>
+  `;
+}
+function wizStepBody(s){
+  if(s===1){
+    return `<p class="muted mt-8" style="margin-bottom:14px;">Select the subjects you want to plan around.</p>
+    <div class="chip-select">${['Mathematics','Physics','Chemistry','English','Biology'].map(sub=>`<button class="chip-opt ${PLAN_WIZ.subjects.includes(sub)?'selected':''}" data-subject="${sub}">${sub}</button>`).join('')}</div>`;
+  }
+  if(s===2){
+    return `<p class="muted mt-8" style="margin-bottom:14px;">We'll pull in topics for your selected subjects automatically — you can fine-tune later from Upload & Learn.</p>
+    <div class="tag-list">${(PLAN_WIZ.subjects.length?PLAN_WIZ.subjects:['Mathematics']).map(sub=>ALL_TOPICS.filter(t=>TOPIC_BANK[t].subject===sub)).flat().map(t=>`<span class="tag">${t}</span>`).join('')||'<span class="muted">No topics yet — go back and pick subjects.</span>'}</div>`;
+  }
+  if(s===3){
+    return `<div class="form-field"><label>When is your exam?</label><input type="date" id="wiz-exam-date" value="${PLAN_WIZ.examDate}"></div>`;
+  }
+  if(s===4){
+    return `<div class="form-field"><label>How many hours can you study per day?</label>
+      <div class="stepper-input">
+        <button data-hrs="-1">−</button><span style="font-weight:700;font-size:1.1rem;min-width:30px;text-align:center;" id="wiz-hrs-val">${PLAN_WIZ.dailyHours}h</span><button data-hrs="1">+</button>
+      </div></div>`;
+  }
+  if(s===5){
+    return `<p class="muted mt-8" style="margin-bottom:14px;">How difficult is your material overall?</p>
+    <div class="chip-select">${['Easy','Medium','Hard'].map(d=>`<button class="chip-opt ${PLAN_WIZ.difficulty===d?'selected':''}" data-difficulty="${d}">${d}</button>`).join('')}</div>`;
+  }
+  if(s===6){
+    return `<p class="muted mt-8" style="margin-bottom:14px;">What should we prioritize?</p>
+    <div class="chip-select">${['Weak Topics First','Balanced','Exam-Nearest Subjects'].map(d=>`<button class="chip-opt ${PLAN_WIZ.priority===d?'selected':''}" data-priority="${d}">${d}</button>`).join('')}</div>`;
+  }
+  return '';
+}
+function renderPlanBoard(){
+  const groups=[
+    {label:'TODAY', key:'today'},
+    {label:'TOMORROW', key:'tomorrow'},
+  ];
+  const weekTasks=STATE.tasks.filter(t=>t.day==='week');
+  return `
+    <div class="grid grid-2 mt-24">
+      ${groups.map(g=>{
+        const tasks=STATE.tasks.filter(t=>t.day===g.key);
+        return `<div class="card">
+          <div class="section-title">${g.label}</div>
+          ${tasks.length?tasks.map(t=>taskRowHTML(t)).join(''):emptyState('plan','Nothing scheduled','',null,'')}
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="card mt-24">
+      <div class="section-title">THIS WEEK</div>
+      ${weekTasks.length?weekTasks.map(t=>taskRowHTML(t)).join(''):`<p class="muted" style="font-size:0.88rem;">Your full week fills in as you complete today's tasks.</p>`}
+    </div>
+  `;
+}
+function mountPlan(){
+  el('page-content').onclick=function(e){
+    const subBtn=e.target.closest('[data-subject]');
+    if(subBtn){
+      const s=subBtn.getAttribute('data-subject');
+      const i=PLAN_WIZ.subjects.indexOf(s);
+      if(i>-1) PLAN_WIZ.subjects.splice(i,1); else PLAN_WIZ.subjects.push(s);
+      rerenderPage(); return;
+    }
+    const diffBtn=e.target.closest('[data-difficulty]');
+    if(diffBtn){ PLAN_WIZ.difficulty=diffBtn.getAttribute('data-difficulty'); rerenderPage(); return; }
+    const prioBtn=e.target.closest('[data-priority]');
+    if(prioBtn){ PLAN_WIZ.priority=prioBtn.getAttribute('data-priority'); rerenderPage(); return; }
+    const hrsBtn=e.target.closest('[data-hrs]');
+    if(hrsBtn){ const d=parseInt(hrsBtn.getAttribute('data-hrs')); PLAN_WIZ.dailyHours=Math.min(10,Math.max(1,PLAN_WIZ.dailyHours+d)); rerenderPage(); return; }
+    if(e.target.closest('#wiz-back')){ PLAN_WIZ.step=Math.max(1,PLAN_WIZ.step-1); rerenderPage(); return; }
+    if(e.target.closest('#wiz-next')){
+      if(PLAN_WIZ.step===1 && PLAN_WIZ.subjects.length===0){ toast('Pick at least one subject'); return; }
+      if(PLAN_WIZ.step<WIZ_STEPS.length){ PLAN_WIZ.step++; rerenderPage(); }
+      else { generateStudyPlan(); rerenderPage(); toast('Your study plan is ready!'); }
+      return;
+    }
+    if(e.target.closest('#regenerate-plan')){
+      STATE.planGenerated=false; PLAN_WIZ.step=1; rerenderPage(); return;
+    }
+    if(e.target.closest('#reschedule-plan')){
+      rescheduleUnfinished(); rerenderPage(); toast('Unfinished tasks moved forward'); return;
+    }
+    const toggleId=e.target.closest('[data-toggle]')?.getAttribute('data-toggle');
+    if(toggleId){
+      const t=STATE.tasks.find(x=>x.id===toggleId);
+      if(t){
+        if(t.status==='completed'){ t.status='pending'; } else { t.status='completed'; toast('Task completed'); }
+        saveState(); rerenderPage();
+      }
+    }
+  };
+  el('page-content').oninput=function(e){
+    if(e.target.id==='wiz-exam-date'){ PLAN_WIZ.examDate=e.target.value; STATE.user.examDate=e.target.value; }
+  };
+}
+function generateStudyPlan(){
+  const priority={'High':0,'Medium':1,'Low':2};
+  const subs=PLAN_WIZ.subjects.length?PLAN_WIZ.subjects:['Mathematics','Physics','Chemistry','English'];
+  const durations=[45,40,50,30,35];
+  const priorities=['High','Medium','Low'];
+  const newTasks=[];
+  subs.forEach((sub,i)=>{
+    const topics=ALL_TOPICS.filter(t=>TOPIC_BANK[t].subject===sub);
+    const topic=topics[0]||`${sub} Fundamentals`;
+    newTasks.push({id:uid(), subject:sub, topic, duration:durations[i%durations.length], priority:priorities[i%3], status:'pending', day:'today'});
+  });
+  subs.forEach((sub,i)=>{
+    const topics=ALL_TOPICS.filter(t=>TOPIC_BANK[t].subject===sub);
+    const topic=topics[1]||topics[0]||`${sub} Review`;
+    newTasks.push({id:uid(), subject:sub, topic, duration:durations[(i+1)%durations.length], priority:priorities[(i+1)%3], status:'pending', day:'tomorrow'});
+  });
+  subs.forEach((sub,i)=>{
+    newTasks.push({id:uid(), subject:sub, topic:`${sub} Practice Set`, duration:30, priority:'Medium', status:'pending', day:'week'});
+  });
+  STATE.tasks=newTasks;
+  STATE.planGenerated=true;
+  STATE.planMeta={difficulty:PLAN_WIZ.difficulty, priority:PLAN_WIZ.priority, dailyHours:PLAN_WIZ.dailyHours};
+  STATE.settings.dailyHours=PLAN_WIZ.dailyHours;
+  STATE.studyTimeTodayMin=0;
+  saveState();
+}
+</script>
+<script>
+/* ---------------------------- UPLOAD & LEARN ---------------------------- */
+function renderUpload(){
+  const mat=STATE.uploadedMaterial;
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">Upload & Learn</span><h1>Upload your study material.</h1><p class="sub">PDF, image, or plain text — LumiLearn will break it down for you.</p></div>
+    </div>
+    <div class="card mt-24" style="max-width:720px;">
+      <div class="dropzone" id="dropzone">
+        ${icon('upload')}
+        <div style="font-weight:700;color:var(--ink-900);margin-bottom:6px;">Drag & drop a file here</div>
+        <p class="muted" style="margin-bottom:16px;">Supports PDF, image (JPG/PNG), or paste text below</p>
+        <button class="btn btn-primary btn-sm" id="browse-btn">Choose a File</button>
+      </div>
+      <div class="form-field mt-16">
+        <label>Or paste your notes</label>
+        <textarea id="paste-notes" rows="4" placeholder="Paste a paragraph, chapter summary, or notes here…"></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" id="analyze-btn">Analyze Material</button>
+    </div>
+
+    ${mat ? renderAnalysis(mat) : ''}
+  `;
+}
+function renderAnalysis(mat){
+  return `
+    <div class="mt-24">
+      <div class="flex items-center gap-8" style="margin-bottom:18px;"><h2 style="font-size:1.1rem;">Material analyzed ✨</h2></div>
+      <div class="analysis-grid">
+        <div class="card"><div class="section-title">Key Concepts</div><div class="tag-list">${mat.concepts.map(c=>`<span class="tag">${c}</span>`).join('')}</div></div>
+        <div class="card"><div class="section-title">Difficult Topics</div><div class="tag-list">${mat.difficultTopics.map(c=>`<span class="tag" style="background:var(--danger-bg);color:var(--danger);">${c}</span>`).join('')}</div></div>
+        <div class="card"><div class="section-title">Quick Summary</div><p style="font-size:0.9rem;line-height:1.6;color:var(--ink-700);">${mat.summary}</p></div>
+        <div class="card"><div class="section-title">Suggested Questions</div><ul style="display:flex;flex-direction:column;gap:8px;">${mat.questions.map(q=>`<li style="font-size:0.88rem;color:var(--ink-700);">• ${q}</li>`).join('')}</ul></div>
+      </div>
+      <div class="card mt-24 flex justify-between items-center" style="flex-wrap:wrap;gap:14px;">
+        <div><div style="font-weight:700;">Recommended Study Time</div><div class="muted" style="font-size:0.85rem;">${mat.recommendedTime} minutes for this material</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-outline-dark btn-sm" id="mat-explain">Explain</button>
+          <button class="btn btn-outline-dark btn-sm" id="mat-quiz">Create Quiz</button>
+          <button class="btn btn-outline-dark btn-sm" id="mat-notes">Make Revision Notes</button>
+          <button class="btn btn-primary btn-sm" id="mat-add-plan">Add to Study Plan</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function analyzeMaterial(sourceLabel){
+  const topic=ALL_TOPICS[Math.floor(Math.random()*ALL_TOPICS.length)];
+  STATE.uploadedMaterial={
+    name: sourceLabel,
+    topic,
+    concepts:[topic, TOPIC_BANK[topic].subject+' fundamentals','Core definitions','Worked examples'],
+    difficultTopics:[topic+' edge cases','Applying the formula under time pressure'],
+    summary: TOPIC_BANK[topic].explain,
+    questions:[`What is the key idea behind ${topic}?`,`Can you give an example of ${topic} in practice?`,`Where do students usually go wrong with ${topic}?`],
+    recommendedTime: 35+Math.floor(Math.random()*25),
+  };
+  saveState();
+}
+function mountUpload(){
+  const dz=el('dropzone');
+  if(dz){
+    ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+    ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+    dz.addEventListener('drop',e=>{
+      const name=(e.dataTransfer.files && e.dataTransfer.files[0]) ? e.dataTransfer.files[0].name : 'Uploaded file';
+      analyzeMaterial(name); rerenderPage(); toast('Material analyzed');
+    });
+  }
+  el('page-content').onclick=function(e){
+    if(e.target.closest('#browse-btn') || e.target.closest('#dropzone')){
+      analyzeMaterial('chapter-notes.pdf'); rerenderPage(); toast('Material analyzed'); return;
+    }
+    if(e.target.closest('#analyze-btn')){
+      const txt=el('paste-notes')?.value.trim();
+      analyzeMaterial(txt?'Pasted notes':'chapter-notes.pdf'); rerenderPage(); toast('Material analyzed'); return;
+    }
+    if(e.target.closest('#mat-add-plan')){
+      const mat=STATE.uploadedMaterial;
+      if(mat){
+        STATE.tasks.push({id:uid(), subject:TOPIC_BANK[mat.topic]?.subject||'General', topic:mat.topic, duration:mat.recommendedTime, priority:'High', status:'pending', day:'today'});
+        saveState(); toast('Added to today\'s study plan');
+      }
+      return;
+    }
+    if(e.target.closest('#mat-explain')){ navigate('#/app/coach'); return; }
+    if(e.target.closest('#mat-quiz')){ navigate('#/app/quiz'); return; }
+    if(e.target.closest('#mat-notes')){ navigate('#/app/notes'); return; }
+  };
+}
+</script>
+<script>
+/* ---------------------------- QUIZ GENERATOR ---------------------------- */
+let QUIZ_STATE=null; // {topic,difficulty,count,questions,current,answers,submitted}
+
+function renderQuiz(){
+  if(QUIZ_STATE && !QUIZ_STATE.finished) return renderQuizActive();
+  if(QUIZ_STATE && QUIZ_STATE.finished) return renderQuizResults();
+  return renderQuizSetup();
+}
+function renderQuizSetup(){
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">Quizzes</span><h1>AI Quiz Generator</h1><p class="sub">Pick a topic and let LumiLearn build a quiz instantly.</p></div>
+    </div>
+    <div class="card mt-24" style="max-width:600px;">
+      <div class="form-field">
+        <label>Topic</label>
+        <div class="chip-select" id="quiz-topic-select">${ALL_TOPICS.map(t=>`<button class="chip-opt ${t===(QUIZ_STATE?.topic||ALL_TOPICS[0])?'selected':''}" data-qtopic="${t}">${t}</button>`).join('')}</div>
+      </div>
+      <div class="form-field">
+        <label>Difficulty</label>
+        <div class="chip-select" id="quiz-diff-select">${['Easy','Medium','Hard'].map(d=>`<button class="chip-opt ${d==='Medium'?'selected':''}" data-qdiff="${d}">${d}</button>`).join('')}</div>
+      </div>
+      <div class="form-field">
+        <label>Number of Questions</label>
+        <div class="chip-select" id="quiz-count-select">${[5,10,20].map(n=>`<button class="chip-opt ${n===5?'selected':''}" data-qcount="${n}">${n}</button>`).join('')}</div>
+      </div>
+      <button class="btn btn-primary btn-block" id="quiz-generate">Generate Quiz</button>
+    </div>
+  `;
+}
+function renderQuizActive(){
+  const qs=QUIZ_STATE;
+  const q=qs.questions[qs.current];
+  const pct=Math.round((qs.current)/qs.questions.length*100);
+  const chosen=qs.answers[qs.current];
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">${qs.topic} · ${qs.difficulty}</span><h1>Question ${qs.current+1} of ${qs.questions.length}</h1></div>
+      <button class="btn btn-outline-dark btn-sm" id="quiz-exit">Exit Quiz</button>
+    </div>
+    <div class="card mt-24" style="max-width:640px;">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <h2 style="font-size:1.15rem;margin-bottom:20px;">${q.q}</h2>
+      ${q.opts.map((o,i)=>`
+        <div class="option-row ${chosen===i?'selected':''}" data-opt="${i}">
+          <span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span>
+        </div>`).join('')}
+      <div class="flex justify-between mt-24">
+        <button class="btn btn-outline-dark btn-sm" id="quiz-prev" ${qs.current===0?'style="visibility:hidden"':''}>Previous</button>
+        <button class="btn btn-primary" id="quiz-next-btn">${qs.current===qs.questions.length-1?'Submit':'Next'}</button>
+      </div>
+    </div>
+  `;
+}
+function renderQuizResults(){
+  const qs=QUIZ_STATE;
+  const correct=qs.questions.filter((q,i)=>qs.answers[i]===q.a).length;
+  const total=qs.questions.length;
+  const pct=Math.round(correct/total*100);
+  const weakTopics = pct<70 ? [qs.topic] : [];
+  return `
+    <div class="page-head"><div><span class="eyebrow">Quiz Results</span><h1>${qs.topic} — ${qs.difficulty}</h1></div></div>
+    <div class="card mt-24" style="max-width:600px;">
+      <div class="score-ring-wrap">
+        <div style="position:relative;width:150px;height:150px;">
+          ${ringSvg(pct,150,12, pct>=70?'var(--success)':pct>=40?'var(--warning)':'var(--danger)')}
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-family:var(--font-head);font-size:2rem;font-weight:700;">${pct}%</div>
+            <div class="muted" style="font-size:0.78rem;">${correct}/${total} correct</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-2 mt-16">
+        <div class="card-flat" style="background:var(--success-bg);"><div style="font-weight:700;color:var(--success);">${correct} Correct Answers</div></div>
+        <div class="card-flat" style="background:var(--danger-bg);"><div style="font-weight:700;color:var(--danger);">${total-correct} Incorrect Answers</div></div>
+      </div>
+      ${weakTopics.length?`<div class="card-flat mt-16" style="background:var(--warning-bg);"><div style="font-weight:700;color:var(--warning);margin-bottom:4px;">Weak Topic Detected</div><div class="muted" style="font-size:0.85rem;">${qs.topic} — recommended for extra revision.</div></div>`:''}
+      <div class="flex gap-12 mt-24" style="flex-wrap:wrap;">
+        <button class="btn btn-primary" id="study-weak-topics">Study Weak Topics</button>
+        <button class="btn btn-outline-dark" id="quiz-retake">Retake Quiz</button>
+        <button class="btn btn-outline-dark" id="quiz-new">New Quiz</button>
+      </div>
+    </div>
+  `;
+}
+function mountQuiz(){
+  let setupTopic=QUIZ_STATE?.topic||ALL_TOPICS[0], setupDiff='Medium', setupCount=5;
+  el('page-content').onclick=function(e){
+    const topicBtn=e.target.closest('[data-qtopic]');
+    if(topicBtn){ setupTopic=topicBtn.getAttribute('data-qtopic'); document.querySelectorAll('#quiz-topic-select .chip-opt').forEach(b=>b.classList.toggle('selected',b===topicBtn)); return; }
+    const diffBtn=e.target.closest('[data-qdiff]');
+    if(diffBtn){ setupDiff=diffBtn.getAttribute('data-qdiff'); document.querySelectorAll('#quiz-diff-select .chip-opt').forEach(b=>b.classList.toggle('selected',b===diffBtn)); return; }
+    const countBtn=e.target.closest('[data-qcount]');
+    if(countBtn){ setupCount=parseInt(countBtn.getAttribute('data-qcount')); document.querySelectorAll('#quiz-count-select .chip-opt').forEach(b=>b.classList.toggle('selected',b===countBtn)); return; }
+    if(e.target.closest('#quiz-generate')){
+      const pool=QUIZ_BANK[setupTopic]||[];
+      let questions=[];
+      for(let i=0;i<setupCount;i++){ questions.push(pool[i%pool.length]); }
+      QUIZ_STATE={topic:setupTopic, difficulty:setupDiff, count:setupCount, questions, current:0, answers:new Array(questions.length).fill(null), finished:false};
+      rerenderPage(); return;
+    }
+    if(e.target.closest('#quiz-exit')){ QUIZ_STATE=null; rerenderPage(); return; }
+    const optRow=e.target.closest('[data-opt]');
+    if(optRow && QUIZ_STATE){
+      QUIZ_STATE.answers[QUIZ_STATE.current]=parseInt(optRow.getAttribute('data-opt'));
+      rerenderPage(); return;
+    }
+    if(e.target.closest('#quiz-prev')){ QUIZ_STATE.current=Math.max(0,QUIZ_STATE.current-1); rerenderPage(); return; }
+    if(e.target.closest('#quiz-next-btn')){
+      if(QUIZ_STATE.current<QUIZ_STATE.questions.length-1){ QUIZ_STATE.current++; }
+      else{
+        QUIZ_STATE.finished=true;
+        const correct=QUIZ_STATE.questions.filter((q,i)=>QUIZ_STATE.answers[i]===q.a).length;
+        STATE.quizHistory.push({id:uid(), topic:QUIZ_STATE.topic, difficulty:QUIZ_STATE.difficulty, score:correct, total:QUIZ_STATE.questions.length, date:new Date().toISOString()});
+        const subj=STATE.subjects.find(s=>s.name===TOPIC_BANK[QUIZ_STATE.topic]?.subject);
+        if(subj) subj.progress=Math.min(100, subj.progress+4);
+        saveState();
+      }
+      rerenderPage(); return;
+    }
+    if(e.target.closest('#quiz-retake')){
+      QUIZ_STATE.current=0; QUIZ_STATE.answers=new Array(QUIZ_STATE.questions.length).fill(null); QUIZ_STATE.finished=false; rerenderPage(); return;
+    }
+    if(e.target.closest('#quiz-new')){ QUIZ_STATE=null; rerenderPage(); return; }
+    if(e.target.closest('#study-weak-topics')){ navigate('#/app/notes'); return; }
+  };
+}
+</script>
+<script>
+/* ---------------------------- REVISION NOTES ---------------------------- */
+let NOTES_TOPIC=ALL_TOPICS[0];
+function buildNotesFor(topic){
+  const t=TOPIC_BANK[topic];
+  return {
+    topic,
+    summary:t.explain,
+    keyPoints:[t.simple, t.example, `Focus area: ${topic} appears frequently in ${t.subject} assessments.`],
+    definitions:[{term:topic, def:t.explain.split('.')[0]+'.'}],
+    examples:[t.example],
+  };
+}
+function renderNotes(){
+  const notes=buildNotesFor(NOTES_TOPIC);
+  return `
+    <div class="page-head">
+      <div><span class="eyebrow">Revision Notes</span><h1>AI-Generated Revision Notes</h1><p class="sub">Clean summaries for fast review before an exam.</p></div>
+    </div>
+    <div class="card mt-24" style="max-width:300px;">
+      <div class="form-field" style="margin-bottom:0;">
+        <label>Topic</label>
+        <select id="notes-topic-select">${ALL_TOPICS.map(t=>`<option value="${t}" ${t===NOTES_TOPIC?'selected':''}>${t}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="grid grid-2 mt-24">
+      <div class="card"><div class="section-title">Summary</div><p style="font-size:0.9rem;line-height:1.65;color:var(--ink-700);">${notes.summary}</p></div>
+      <div class="card"><div class="section-title">Key Points</div><ul style="display:flex;flex-direction:column;gap:10px;">${notes.keyPoints.map(k=>`<li style="font-size:0.88rem;color:var(--ink-700);">• ${k}</li>`).join('')}</ul></div>
+      <div class="card"><div class="section-title">Important Definitions</div>${notes.definitions.map(d=>`<p style="font-size:0.88rem;margin-bottom:6px;"><strong>${d.term}:</strong> ${d.def}</p>`).join('')}</div>
+      <div class="card"><div class="section-title">Examples</div>${notes.examples.map(e=>`<p style="font-size:0.88rem;color:var(--ink-700);">${e}</p>`).join('')}</div>
+    </div>
+    <div class="card mt-24">
+      <div class="section-title">Quick Revision</div>
+      <p style="font-size:0.9rem;color:var(--ink-700);">${notes.topic} in one line: ${TOPIC_BANK[NOTES_TOPIC].simple}</p>
+      <div class="flex gap-12 mt-16" style="flex-wrap:wrap;">
+        <button class="btn btn-outline-dark btn-sm" id="notes-shorter">Make Shorter</button>
+        <button class="btn btn-outline-dark btn-sm" id="notes-simpler">Explain Simpler</button>
+        <button class="btn btn-outline-dark btn-sm" id="notes-quiz">Create Quiz</button>
+        <button class="btn btn-primary btn-sm" id="notes-add-plan">Add to Study Plan</button>
+      </div>
+    </div>
+  `;
+}
+function mountNotes(){
+  el('page-content').onchange=function(e){
+    if(e.target.id==='notes-topic-select'){ NOTES_TOPIC=e.target.value; rerenderPage(); }
+  };
+  el('page-content').onclick=function(e){
+    if(e.target.closest('#notes-shorter')){ toast('Shortened to key takeaways'); return; }
+    if(e.target.closest('#notes-simpler')){ toast(TOPIC_BANK[NOTES_TOPIC].simple); return; }
+    if(e.target.closest('#notes-quiz')){ navigate('#/app/quiz'); return; }
+    if(e.target.closest('#notes-add-plan')){
+      STATE.tasks.push({id:uid(), subject:TOPIC_BANK[NOTES_TOPIC].subject, topic:NOTES_TOPIC+' Revision', duration:25, priority:'Medium', status:'pending', day:'today'});
+      saveState(); toast('Added to today\'s study plan'); return;
+    }
+  };
+}
+</script>
+<script>
+/* ---------------------------- PROGRESS ---------------------------- */
+function renderProgress(){
+  const overall=Math.round(STATE.subjects.reduce((s,x)=>s+x.progress,0)/STATE.subjects.length);
+  const totalQuizzes=STATE.quizHistory.length;
+  const avgScore=totalQuizzes?Math.round(STATE.quizHistory.reduce((s,q)=>s+(q.score/q.total*100),0)/totalQuizzes):0;
+  const weak=STATE.subjects.slice().sort((a,b)=>a.progress-b.progress)[0];
+  const totalStudyHrsWeek = Math.round((STATE.studyTimeTodayMin + STATE.tasks.filter(t=>t.status==='completed').reduce((s,t)=>s+t.duration,0))/60*10)/10;
+  return `
+    <div class="page-head"><div><span class="eyebrow">Progress</span><h1>Your Progress</h1><p class="sub">A clear look at how your studying is paying off.</p></div></div>
+    <div class="grid grid-3 mt-24">
+      <div class="card" style="text-align:center;">
+        <div class="section-title">Overall Progress</div>
+        <div style="display:flex;justify-content:center;position:relative;">
+          <div style="position:relative;width:130px;height:130px;">
+            ${ringSvg(overall,130,11)}
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.6rem;font-weight:700;">${overall}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Study Hours</div>
+        <div class="stat-value">${totalStudyHrsWeek}h</div>
+        <div class="muted" style="font-size:0.82rem;margin-top:6px;">Current streak: ${STATE.streak} days</div>
+      </div>
+      <div class="card">
+        <div class="section-title">Quiz Scores</div>
+        <div class="stat-value">${avgScore}%</div>
+        <div class="muted" style="font-size:0.82rem;margin-top:6px;">${totalQuizzes} quiz${totalQuizzes===1?'':'zes'} taken</div>
+      </div>
+    </div>
+    <div class="grid grid-2 mt-24">
+      <div class="card">
+        <div class="section-title">Subject Progress</div>
+        ${STATE.subjects.map(s=>`
+          <div class="subject-progress-row">
+            <span style="font-size:0.88rem;font-weight:600;width:110px;flex:none;">${s.name}</span>
+            <div class="bar-track"><div class="bar-fill" style="width:${s.progress}%;background:${subjColor(s.name)}"></div></div>
+            <span class="muted" style="font-size:0.8rem;width:34px;text-align:right;">${s.progress}%</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="section-title">Weak Topics</div>
+        ${STATE.quizHistory.filter(q=>(q.score/q.total)<0.7).length===0 ?
+          `<p class="muted" style="font-size:0.88rem;">No weak topics detected yet — take a quiz to find out where to focus.</p>` :
+          `<ul style="display:flex;flex-direction:column;gap:10px;">${STATE.quizHistory.filter(q=>(q.score/q.total)<0.7).slice(-4).map(q=>`<li style="font-size:0.88rem;">• ${q.topic} — scored ${Math.round(q.score/q.total*100)}%</li>`).join('')}</ul>`}
+        <p class="muted mt-16" style="font-size:0.82rem;">Overall weakest subject: <strong style="color:var(--ink-900)">${weak?weak.name:'—'}</strong></p>
+      </div>
+    </div>
+  `;
+}
+function mountProgress(){}
+</script>
+<script>
+/* ---------------------------- FOCUS MODE ---------------------------- */
+let FOCUS_TIMER={seconds:25*60, total:25*60, running:false, intervalId:null, mode:'focus'};
+function fmtTimer(s){ const m=Math.floor(s/60); const ss=s%60; return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; }
+function renderFocus(){
+  const subject=STATE.focus.lastSubject, topic=STATE.focus.lastTopic;
+  const pct=Math.round((1-FOCUS_TIMER.seconds/FOCUS_TIMER.total)*100);
+  return `
+    <div class="focus-wrap">
+      <div class="focus-ambient">
+        <div class="blob" style="width:260px;height:260px;background:var(--violet);top:-40px;left:-40px;"></div>
+        <div class="blob" style="width:220px;height:220px;background:var(--blue-soft);bottom:-30px;right:-20px;animation-delay:3s;"></div>
+      </div>
+      <div class="focus-content">
+        <span class="eyebrow" style="text-align:center;">Focus Mode</span>
+        <h1 style="font-size:1.4rem;">${subject} · ${topic}</h1>
+        <div class="timer-ring-wrap">
+          ${ringSvg(pct,280,10)}
+          <div class="timer-display">
+            <div class="timer-time" id="timer-time">${fmtTimer(FOCUS_TIMER.seconds)}</div>
+            <div class="timer-label">${FOCUS_TIMER.mode==='focus'?'Focus session':'Break'}</div>
+          </div>
+        </div>
+        <div class="timer-controls">
+          <button class="round-btn secondary" id="timer-reset">${icon('reset')}</button>
+          <button class="round-btn primary" id="timer-toggle">${icon(FOCUS_TIMER.running?'pause':'play')}</button>
+          <button class="round-btn secondary" id="timer-skip">${icon('arrowRight')}</button>
+        </div>
+        <p class="muted mt-16" style="font-size:0.85rem;">Session progress: ${STATE.focus.sessionsToday} completed today</p>
+      </div>
+    </div>
+  `;
+}
+function tickTimer(){
+  FOCUS_TIMER.seconds--;
+  const t=el('timer-time');
+  if(t) t.textContent=fmtTimer(FOCUS_TIMER.seconds);
+  const ringFill=document.querySelector('.timer-ring-wrap .ring-fill');
+  if(ringFill){
+    const pct=Math.round((1-FOCUS_TIMER.seconds/FOCUS_TIMER.total)*100);
+    const r=parseFloat(ringFill.getAttribute('r')); const c=2*Math.PI*r;
+    ringFill.setAttribute('stroke-dasharray',c);
+    ringFill.setAttribute('stroke-dashoffset', c-(pct/100)*c);
+  }
+  if(FOCUS_TIMER.seconds<=0){
+    clearInterval(FOCUS_TIMER.intervalId); FOCUS_TIMER.running=false;
+    if(FOCUS_TIMER.mode==='focus'){
+      STATE.focus.sessionsToday++;
+      STATE.studyTimeTodayMin+=25;
+      saveState();
+      toast('Focus session complete — take a short break!');
+      FOCUS_TIMER.mode='break'; FOCUS_TIMER.seconds=5*60; FOCUS_TIMER.total=5*60;
+    } else {
+      toast('Break over — ready for another round?');
+      FOCUS_TIMER.mode='focus'; FOCUS_TIMER.seconds=25*60; FOCUS_TIMER.total=25*60;
+    }
+    rerenderPage();
+  }
+}
+function mountFocus(){
+  el('page-content').onclick=function(e){
+    if(e.target.closest('#timer-toggle')){
+      if(FOCUS_TIMER.running){ clearInterval(FOCUS_TIMER.intervalId); FOCUS_TIMER.running=false; }
+      else{ FOCUS_TIMER.running=true; FOCUS_TIMER.intervalId=setInterval(tickTimer,1000); }
+      rerenderPage(); return;
+    }
+    if(e.target.closest('#timer-reset')){
+      clearInterval(FOCUS_TIMER.intervalId); FOCUS_TIMER.running=false;
+      FOCUS_TIMER.seconds=FOCUS_TIMER.mode==='focus'?25*60:5*60; FOCUS_TIMER.total=FOCUS_TIMER.seconds;
+      rerenderPage(); return;
+    }
+    if(e.target.closest('#timer-skip')){
+      clearInterval(FOCUS_TIMER.intervalId); FOCUS_TIMER.running=false;
+      FOCUS_TIMER.mode=FOCUS_TIMER.mode==='focus'?'break':'focus';
+      FOCUS_TIMER.seconds=FOCUS_TIMER.mode==='focus'?25*60:5*60; FOCUS_TIMER.total=FOCUS_TIMER.seconds;
+      rerenderPage(); return;
+    }
+  };
+}
+</script>
+<script>
+/* ---------------------------- SETTINGS ---------------------------- */
+function renderSettings(){
+  return `
+    <div class="page-head"><div><span class="eyebrow">Settings</span><h1>Settings</h1><p class="sub">Manage your profile and study preferences.</p></div></div>
+    <div class="grid grid-2 mt-24">
+      <div class="card">
+        <div class="section-title">Profile</div>
+        <div class="form-field"><label>Name</label><input type="text" id="settings-name" value="${STATE.user.name}"></div>
+        <div class="form-field" style="margin-bottom:0;"><label>Exam Date</label><input type="date" id="settings-exam" value="${STATE.user.examDate||''}"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">Study Preferences</div>
+        <div class="form-field" style="margin-bottom:0;">
+          <label>Daily Study Hours</label>
+          <div class="stepper-input">
+            <button data-settings-hrs="-1">−</button><span style="font-weight:700;font-size:1.05rem;min-width:30px;text-align:center;">${STATE.settings.dailyHours}h</span><button data-settings-hrs="1">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-24">
+      <div class="settings-row">
+        <div><div class="label">Notification Preferences</div><div class="desc">Get reminders for upcoming study tasks.</div></div>
+        <button class="toggle ${STATE.settings.notifications?'on':''}" id="toggle-notifications"></button>
+      </div>
+      <div class="settings-row">
+        <div><div class="label">Theme</div><div class="desc">LumiLearn's signature dark navy + lavender look.</div></div>
+        <div class="chip-select"><button class="chip-opt selected">Midnight</button></div>
+      </div>
+    </div>
+    <div class="card mt-24" style="border-color:var(--danger-bg);">
+      <div class="settings-row" style="border-bottom:${SETTINGS_CONFIRM_RESET?'1px solid var(--line)':'none'};">
+        <div><div class="label">Reset Study Data</div><div class="desc">Clears tasks, quiz history, notes and progress. This can't be undone.</div></div>
+        ${SETTINGS_CONFIRM_RESET?'':'<button class="btn btn-sm" style="background:var(--danger-bg);color:var(--danger);" id="reset-data-btn">Reset Data</button>'}
+      </div>
+      ${SETTINGS_CONFIRM_RESET?`<div class="flex items-center justify-between" style="padding-top:14px;flex-wrap:wrap;gap:10px;">
+        <span class="muted" style="font-size:0.85rem;">Are you sure? This will erase all your study progress.</span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-outline-dark btn-sm" id="reset-cancel">Cancel</button>
+          <button class="btn btn-sm" style="background:var(--danger);color:#fff;" id="reset-confirm">Yes, Reset</button>
+        </div>
+      </div>`:''}
+    </div>
+  `;
+}
+let SETTINGS_CONFIRM_RESET=false;
+function mountSettings(){
+  el('page-content').onclick=function(e){
+    const hrs=e.target.closest('[data-settings-hrs]');
+    if(hrs){ STATE.settings.dailyHours=Math.min(10,Math.max(1,STATE.settings.dailyHours+parseInt(hrs.getAttribute('data-settings-hrs')))); saveState(); rerenderPage(); return; }
+    if(e.target.closest('#toggle-notifications')){ STATE.settings.notifications=!STATE.settings.notifications; saveState(); rerenderPage(); return; }
+    if(e.target.closest('#reset-data-btn')){ SETTINGS_CONFIRM_RESET=true; rerenderPage(); return; }
+    if(e.target.closest('#reset-cancel')){ SETTINGS_CONFIRM_RESET=false; rerenderPage(); return; }
+    if(e.target.closest('#reset-confirm')){
+      resetState(); QUIZ_STATE=null; SETTINGS_CONFIRM_RESET=false; render(); toast('Study data reset');
+      return;
+    }
+  };
+  el('page-content').onchange=function(e){
+    if(e.target.id==='settings-name'){ STATE.user.name=e.target.value||'Student'; saveState(); }
+    if(e.target.id==='settings-exam'){ STATE.user.examDate=e.target.value; saveState(); }
+  };
+}
+</script>
+</body>
+</html>
